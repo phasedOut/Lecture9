@@ -21,12 +21,6 @@ class DetailTableViewController: UITableViewController {
     var tweet: Tweet? {
         didSet{
             updateUI()
-//            tweetCollection.append(["Hash Tags" : tweet?.hashtags ?? ""] as [String: Any])
-//            tweetCollection.append(["Urls" : tweet?.hashtags ?? ""] as [String: Any])
-//            tweetCollection.append(["Images" : tweet?.media ?? ""] as [String:Any])
-//            tweetData?["hashTags"] = tweet?.hashtags
-//            tweetData?["urls"] = tweet?.urls
-//            tweetMedia?["images"] = tweet?.media
         }
     }
     
