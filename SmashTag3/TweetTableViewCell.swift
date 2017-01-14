@@ -56,8 +56,20 @@ class TweetTableViewCell: UITableViewCell {
         tweetScreenNameLabel?.text = "\(tweet!.user!)"
         
         
+        //Text highlights
+        var tempText = NSMutableAttributedString(string: (tweet?.text)!)
+        let yellowHighlight = [NSBackgroundColorAttributeName : UIColor.yellow]
+        let lightGrayHighlight = [NSBackgroundColorAttributeName : UIColor.lightGray]
+        let blueHighlight = [NSForegroundColorAttributeName : UIColor.blue]
+
+        tempText = attributeIt(string: tweet?.hashtags, temp: tempText, attr: yellowHighlight)
+        tempText = attributeIt(string: tweet?.userMentions, temp: tempText, attr: lightGrayHighlight)
+        tempText = attributeIt(string: tweet?.urls, temp: tempText, attr: blueHighlight)
+
+        tweetTextLabel?.attributedText = tempText
         
-        tweetTextLabel?.text = tweet?.text
+
+        //add camera emoji
         if tweetTextLabel?.text != nil {
             for _ in tweet!.media {
                 tweetTextLabel.text! += " 📸"
@@ -65,5 +77,14 @@ class TweetTableViewCell: UITableViewCell {
         }
         
         
+    }
+    private func attributeIt(string: [Tweet.IndexedKeyword]?, temp: NSMutableAttributedString, attr: [String : UIColor]) -> NSMutableAttributedString {
+        if let range = string {
+            for i in range {
+                let myRange = NSRange(location: i.nsrange.location, length: i.nsrange.length)
+                temp.addAttributes(attr, range: myRange)
+            }
+        }
+        return temp
     }
 }

@@ -75,16 +75,7 @@ class DetailTableViewController: UITableViewController {
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "detailMention", for: indexPath)
-//        
-//        if let data = cell as? DetailTableViewCell {
-//            let hashtags = tweet?.hashtags
-//            data.label.text = hashtags?.description
-//        }
 
-       // var x = tableView.indexPathForSelectedRow
         let data = tweetCollection[indexPath.section]
         
         let dequeued = tableView.dequeueReusableCell(withIdentifier: "detailMention", for: indexPath)
