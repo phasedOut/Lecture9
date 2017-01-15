@@ -14,7 +14,9 @@ class DetailTableViewController: UITableViewController {
 //    var userMention: [Tweet.IndexedKeyword]?
 //    var hashtags: [Tweet.IndexedKeyword]?
     
-    var tweetCollection = [[String : Any]]()
+    var tweetCollection = [[Any]]()
+    
+    var header = [String]()
     
     //var tweetMedia: [String: [MediaItem]]?
     
@@ -26,62 +28,71 @@ class DetailTableViewController: UITableViewController {
     
     private func updateUI() {
         if let tweet = self.tweet {
-            if tweet.userMentions.description != "[]" {
-                appendToCollection(object: ["User Mention(s)" : tweet.userMentions])
-            }
-            if tweet.hashtags.description != "[]" {
-                appendToCollection(object: ["Hash Tag(s)" : tweet.hashtags])
-            }
-            if tweet.urls.description != "[]" {
-                appendToCollection(object: ["Url(s)" : tweet.urls])
-            }
 
+            if !tweet.userMentions.isEmpty {
+                tweetCollection.append(tweet.userMentions)
+                header.append("User Mention(s)")
+            }
+            if !tweet.hashtags.isEmpty {
+                tweetCollection.append(tweet.hashtags)
+                header.append("Hash Tag(s)")
+            }
+            if !tweet.urls.isEmpty {
+                tweetCollection.append(tweet.urls)
+                header.append("Url(s)")
+            }
         }
-    }
-    
-    private func appendToCollection(object: [String : [Tweet.IndexedKeyword]] ){
-        tweetCollection.append(object)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
 
     }
     
-    
-
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
+        
         return tweetCollection.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return tweetCollection[section].values.count
+
+        return tweetCollection[section].count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let key = [tweetCollection[section].first?.key]
-        return key[0]
+        
+        return header[section]
     }
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let data = tweetCollection[indexPath.section]
+        let data = tweetCollection[indexPath.section][indexPath.row]
+        
+        var text: String?
+
+        if let indexedKeyword = data as? Tweet.IndexedKeyword {
+            text = indexedKeyword.keyword
+        }
+        
+        //TODO
+//        if let media = data as? [MediaItem] {
+//            for i in media {
+//                
+//            }
+//        }
+
         
         let dequeued = tableView.dequeueReusableCell(withIdentifier: "detailMention", for: indexPath)
         
         if let cell = dequeued as? DetailTableViewCell {
-            cell.label.text = data.description
+            cell.label.text = text
         }
         // Configure the cell...
         return dequeued

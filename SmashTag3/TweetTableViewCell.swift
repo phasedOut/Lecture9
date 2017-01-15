@@ -78,7 +78,7 @@ class TweetTableViewCell: UITableViewCell {
         
         
     }
-    private func attributeIt(string: [Tweet.IndexedKeyword]?, temp: NSMutableAttributedString, attr: [String : UIColor]) -> NSMutableAttributedString {
+    func attributeIt(string: [Tweet.IndexedKeyword]?, temp: NSMutableAttributedString, attr: [String : UIColor]) -> NSMutableAttributedString {
         if let range = string {
             for i in range {
                 let myRange = NSRange(location: i.nsrange.location, length: i.nsrange.length)
