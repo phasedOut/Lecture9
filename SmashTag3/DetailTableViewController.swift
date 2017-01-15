@@ -16,7 +16,9 @@ class DetailTableViewController: UITableViewController {
     
     var tweetCollection = [[Any]]()
     
-    var header = [String]()
+    private var header = [String]()
+    
+    var selectedIndexedKeyword: String?
     
     //var tweetMedia: [String: [MediaItem]]?
     
@@ -40,6 +42,10 @@ class DetailTableViewController: UITableViewController {
             if !tweet.urls.isEmpty {
                 tweetCollection.append(tweet.urls)
                 header.append("Url(s)")
+            }
+            if !tweet.media.isEmpty {
+                tweetCollection.append(tweet.media)
+                header.append("Image(s)")
             }
         }
     }
@@ -75,28 +81,65 @@ class DetailTableViewController: UITableViewController {
 
         let data = tweetCollection[indexPath.section][indexPath.row]
         
-        var text: String?
-
-        if let indexedKeyword = data as? Tweet.IndexedKeyword {
-            text = indexedKeyword.keyword
-        }
-        
-        //TODO
-//        if let media = data as? [MediaItem] {
-//            for i in media {
-//                
-//            }
-//        }
-
-        
         let dequeued = tableView.dequeueReusableCell(withIdentifier: "detailMention", for: indexPath)
         
-        if let cell = dequeued as? DetailTableViewCell {
-            cell.label.text = text
+
+        if let indexedKeyword = data as? Tweet.IndexedKeyword {
+            let text = indexedKeyword.keyword
+            
+            if let cell = dequeued as? DetailTableViewCell {
+                cell.label.text = text
+            }
         }
-        // Configure the cell...
+        
+        else if let media = data as? MediaItem {
+            if let cell = dequeued as? DetailTableViewCell {
+                cell.label.isHidden = true
+                DispatchQueue.global().async {
+                    if let imgData = NSData(contentsOf: media.url as URL) {
+                        DispatchQueue.main.async {
+                                cell.mentionImage.image = UIImage(data: imgData as Data)
+                                UIView.performWithoutAnimation {
+                                    tableView.beginUpdates()
+                                    tableView.endUpdates()
+                                }
+                        }
+                    }
+                }
+            }
+            
+        }
+        
         return dequeued
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let data = tweetCollection[indexPath.section][indexPath.row]
+        
+        if let indexedKeyword = data as? Tweet.IndexedKeyword {
+            selectedIndexedKeyword = indexedKeyword.keyword
+        }
+        
+        
+        performSegue(withIdentifier: "unwindToTweetTableViewController", sender: self)
+    }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if let identifier = segue.identifier {
+//            switch identifier {
+//                case "showTweet":
+//                    if let cell = sender as? DetailTableViewCell {
+//                        let indexPath = tableView.indexPath(for: cell)
+//                        let segueToVC = segue.destination as? TweetTableViewController
+//                        if let text = self.tweetCollection[(indexPath?.section)!][(indexPath?.row)!] as? Tweet.IndexedKeyword {
+//                            segueToVC?.searchText = text.keyword
+//                        }
+//                }
+//            default: break
+//            }
+//        }
+//    }
 
 
     /*

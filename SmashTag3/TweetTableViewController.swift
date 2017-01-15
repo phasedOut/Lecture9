@@ -112,6 +112,12 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
+    @IBAction func unwindToTweetTable(segue: UIStoryboardSegue) {
+        if let detailTable = segue.source as? DetailTableViewController {
+            searchText = detailTable.selectedIndexedKeyword
+        }
+    }
+    
     
     
     /*
