@@ -43,7 +43,7 @@ class TweetTableViewCell: UITableViewCell {
                     }
                 }
             }
-        }
+        } 
 
         let formatter = DateFormatter()
         if NSDate().timeIntervalSince(tweet?.created as! Date) > 24*60*60 {
@@ -58,12 +58,12 @@ class TweetTableViewCell: UITableViewCell {
         
         //Text highlights
         var tempText = NSMutableAttributedString(string: (tweet?.text)!)
-        let yellowHighlight = [NSBackgroundColorAttributeName : UIColor.yellow]
-        let lightGrayHighlight = [NSBackgroundColorAttributeName : UIColor.lightGray]
+        let brownHighlight = [NSForegroundColorAttributeName : UIColor.brown]
+        let orangeHighlight = [NSForegroundColorAttributeName : UIColor.orange]
         let blueHighlight = [NSForegroundColorAttributeName : UIColor.blue]
 
-        tempText = attributeIt(string: tweet?.hashtags, temp: tempText, attr: yellowHighlight)
-        tempText = attributeIt(string: tweet?.userMentions, temp: tempText, attr: lightGrayHighlight)
+        tempText = attributeIt(string: tweet?.hashtags, temp: tempText, attr: brownHighlight)
+        tempText = attributeIt(string: tweet?.userMentions, temp: tempText, attr: orangeHighlight)
         tempText = attributeIt(string: tweet?.urls, temp: tempText, attr: blueHighlight)
 
         tweetTextLabel?.attributedText = tempText

@@ -10,10 +10,6 @@ import UIKit
 
 class DetailTableViewCell: UITableViewCell {
 
-    
-    @IBOutlet weak var mentionImage: UIImageView!
-    
-    
     @IBOutlet weak var label: UILabel!
 
 }

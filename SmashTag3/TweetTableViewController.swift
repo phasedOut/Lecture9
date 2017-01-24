@@ -56,6 +56,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         tableView.rowHeight = UITableViewAutomaticDimension
         
     }
+    
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -86,6 +87,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet weak var searchTextField: UITextField! {
         didSet {
+            searchTextField.frame.size.height = 50
             searchTextField.delegate = self
             searchTextField.text = searchText
         }
@@ -94,6 +96,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         searchText = searchTextField.text
+        
+        SearchHistory.History.append(string: searchText!)
         return true
     }
     
@@ -112,10 +116,14 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
-    @IBAction func unwindToTweetTable(segue: UIStoryboardSegue) {
-        if let detailTable = segue.source as? DetailTableViewController {
-            searchText = detailTable.selectedIndexedKeyword
+    @IBAction func unwind(segue: UIStoryboardSegue) {
+        if let detailTableVC = segue.source as? DetailTableViewController{
+            searchText = detailTableVC.selectedIndexedKeyword
         }
+        else if let recentTableVC = segue.source as? RecentsTableViewController{
+            searchText = recentTableVC.selectedRecentTweet
+        }
+        searchTextField.text?.removeAll()
     }
     
     
