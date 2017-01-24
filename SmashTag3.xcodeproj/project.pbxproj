@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BA0CC35D1E380F1700943831 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BA0CC35B1E380F1700943831 /* Model.xcdatamodeld */; };
 		BADBC3121E27AAE3001230E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADBC3111E27AAE3001230E5 /* AppDelegate.swift */; };
 		BADBC3171E27AAE3001230E5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BADBC3151E27AAE3001230E5 /* Main.storyboard */; };
 		BADBC3191E27AAE3001230E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BADBC3181E27AAE3001230E5 /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BA0CC35C1E380F1700943831 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		BADBC30E1E27AAE3001230E5 /* SmashTag3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmashTag3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BADBC3111E27AAE3001230E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BADBC3161E27AAE3001230E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -64,12 +66,13 @@
 		BADBC3101E27AAE3001230E5 /* SmashTag3 */ = {
 			isa = PBXGroup;
 			children = (
-				BADBC3231E27AB0F001230E5 /* Supporting Files */,
+				BA0CC35B1E380F1700943831 /* Model.xcdatamodeld */,
 				BADBC3151E27AAE3001230E5 /* Main.storyboard */,
 				BAE3EBDA1E298A2600B8526E /* DetailTableViewCell.swift */,
 				BAE3EBD81E29894200B8526E /* DetailTableViewController.swift */,
 				BADBC3291E27B934001230E5 /* TweetTableViewCell.swift */,
 				BADBC3241E27AB5C001230E5 /* TweetTableViewController.swift */,
+				BADBC3231E27AB0F001230E5 /* Supporting Files */,
 			);
 			path = SmashTag3;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 				BADBC3251E27AB5C001230E5 /* TweetTableViewController.swift in Sources */,
 				BAE3EBDB1E298A2600B8526E /* DetailTableViewCell.swift in Sources */,
 				BADBC32A1E27B934001230E5 /* TweetTableViewCell.swift in Sources */,
+				BA0CC35D1E380F1700943831 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,6 +336,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		BA0CC35B1E380F1700943831 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BA0CC35C1E380F1700943831 /* Model.xcdatamodel */,
+			);
+			currentVersion = BA0CC35C1E380F1700943831 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = BADBC3061E27AAE3001230E5 /* Project object */;
 }
