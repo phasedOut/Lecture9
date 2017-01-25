@@ -2,7 +2,7 @@
 //  Tweets+CoreDataProperties.swift
 //  SmashTag3
 //
-//  Created by Yuji Sakai on 1/25/17.
+//  Created by Yuji Sakai on 1/26/17.
 //  Copyright © 2017 Yuji Sakai. All rights reserved.
 //
 
@@ -17,8 +17,8 @@ extension Tweets {
     }
 
     @NSManaged public var posted: NSDate?
-    @NSManaged public var unique: String?
     @NSManaged public var text: String?
+    @NSManaged public var unique: String?
     @NSManaged public var tweeter: TwitterUser?
 
 }

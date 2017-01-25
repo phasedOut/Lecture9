@@ -54,14 +54,16 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
-    private func updateDatabase(newTweets: [Twitter.Tweet]) {
+    private func updateDatabase(newTweets: [Tweet]) {
         managedObjectContext?.perform {
             for twitterInfo in newTweets {
-                //create a new, unique Tweet with that Twitter info
-//                _ = Tweets.tweetWithTwitterInfo(twitterInfo, inManagedObjectContext: self.managedObjectContext)
-                
-                
-                
+                //create a new but unique Tweets with that Twitter info
+                _ = Tweets.tweetWithTwitterInfo(twitterInfo: twitterInfo, inManagedObjectContext: self.managedObjectContext!)
+            }
+            do {
+                try self.managedObjectContext?.save()
+            } catch let error {
+                print("Could not save, \(error)")
             }
         }
     }
