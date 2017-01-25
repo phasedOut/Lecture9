@@ -284,7 +284,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rL6-ll-bVx" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="search" id="xoq-xL-8JE"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Gzw-nv-woB">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Gzw-nv-woB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="titleTextAttributes">
