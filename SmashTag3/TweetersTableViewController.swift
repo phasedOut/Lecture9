@@ -7,45 +7,72 @@
 //
 
 import UIKit
+import CoreData
 
-class TweetersTableViewController: UITableViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+class TweetersTableViewController: CoreDataTableViewController {
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+    var mention: String? { didSet { updateUI() } }
+    var managedObjectContext: NSManagedObjectContext? { didSet{ updateUI() } }
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+
+    private func updateUI() {
+        if let context = managedObjectContext, mention != nil {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "TwitterUser")
+            request.predicate = NSPredicate(format: "any tweets.text contains[c] %@ and !screenName beginswith[c] %@", mention!, "darkside")
+            request.sortDescriptors = [NSSortDescriptor(
+                key: "screenName",
+                ascending: true,
+                selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
+                )]
+            fetchedResultsController = NSFetchedResultsController(
+                fetchRequest: request,
+                managedObjectContext: context,
+                sectionNameKeyPath: nil,
+                cacheName: nil
+            )
+        } else {
+            fetchedResultsController = nil
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    private func tweetCountMentionByTwitterUser(user: TwitterUser) -> Int? {
+        var count: Int?
+        user.managedObjectContext?.performAndWait {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Tweets")
+            request.predicate = NSPredicate(format: "text contains[c] %@ and tweeter = %@", self.mention!, user)
+            do {
+                count = try user.managedObjectContext?.count(for: request)
+            } catch let error {
+                print("Could not request NSFetchRequest, \(error)")
+            }
+        }
+        return count
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TwitterUserCell", for: indexPath)
+        
+        if let twitterUser = fetchedResultsController?.object(at: indexPath) as? TwitterUser {
+            var screenName: String?
+            twitterUser.managedObjectContext?.performAndWait {
+                screenName = twitterUser.screenName
+            }
+            cell.textLabel?.text = screenName
+            if let count = tweetCountMentionByTwitterUser(user: twitterUser) {
+                cell.detailTextLabel?.text = (count == 1) ? "1 tweet" : "\(count) tweets"
+            } else {
+                cell.detailTextLabel?.text = ""
+            }
+        }
 
         // Configure the cell...
 
         return cell
     }
-    */
+
 
     /*
     // Override to support conditional editing of the table view.

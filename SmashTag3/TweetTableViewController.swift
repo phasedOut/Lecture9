@@ -66,6 +66,18 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                 print("Could not save, \(error)")
             }
         }
+        printDataStatistics()
+        print("Done printing database statistics")
+    }
+    
+    private func printDataStatistics() {
+        managedObjectContext?.perform {
+            if let results = try? self.managedObjectContext?.fetch(NSFetchRequest(entityName: "TwitterUser")) {
+                print("\(results!.count) Twitter Users")
+            }
+            let tweetCount = try? self.managedObjectContext?.count(for: NSFetchRequest(entityName: "Tweets"))
+            print("\(tweetCount!) Tweets")
+        }
     }
     
     override func viewDidLoad() {
@@ -90,7 +102,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
     private struct Storyboard {
         static let TweetCellIdentifier = "Tweet"
-        static let DetailControllerSegue = "ShowDetail"
+        static let ShowDetail = "ShowDetail"
+        static let TweetsMentioningSearchTerm = "TweetsMentioningSearchTerm"
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -123,11 +136,16 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             switch identifier {
-                case "ShowDetail":
+                case Storyboard.ShowDetail:
                     if let cell = sender as? TweetTableViewCell {
                         let indexPath = tableView.indexPath(for: cell)
                         let seguedToMVC = segue.destination as? DetailTableViewController
                         seguedToMVC?.tweet = self.tweets[(indexPath?.section)!][(indexPath?.row)!]
+                }
+            case Storyboard.TweetsMentioningSearchTerm:
+                if let tweetersTVC = segue.destination as? TweetersTableViewController {
+                    tweetersTVC.mention = searchText
+                    tweetersTVC.managedObjectContext = self.managedObjectContext
                 }
                 default:
                     break
