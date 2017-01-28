@@ -73,7 +73,7 @@ class RecentsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        performSegue(withIdentifier: "showUserAndHashtag", sender: UITableViewCellAccessoryType.detailDisclosureButton)
+        performSegue(withIdentifier: "showUserAndHashtag", sender: tableView.cellForRow(at: indexPath))
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -101,11 +101,11 @@ class RecentsTableViewController: UITableViewController {
                     
                 }
             case Storyboard.showUserAndHashtag:
-                print("hello0")
                 if let AllUserHashTagsTVC = segue.destination as? AllUserHashTagsTableViewController {
-                    let cell = sender as? UITableViewCell
-                    AllUserHashTagsTVC.mention = cell?.textLabel?.text
-                    AllUserHashTagsTVC.managedObjectContext = self.managedObjectContext
+                    if let cell = sender as? UITableViewCell {
+                        AllUserHashTagsTVC.mention = cell.textLabel?.text
+                        AllUserHashTagsTVC.managedObjectContext = self.managedObjectContext
+                    }
                 }
             default:
                 break
