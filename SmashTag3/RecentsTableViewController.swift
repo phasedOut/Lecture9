@@ -58,10 +58,16 @@ class RecentsTableViewController: UITableViewController {
         let data = SearchHistory.History.history[indexPath.row]
         
         cell.textLabel?.text = data
+        
+        cell.accessoryType = UITableViewCellAccessoryType.detailDisclosureButton
 
         // Configure the cell...
 
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        performSegue(withIdentifier: "showSegue", sender: UITableViewCellAccessoryType.detailDisclosureButton)
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
