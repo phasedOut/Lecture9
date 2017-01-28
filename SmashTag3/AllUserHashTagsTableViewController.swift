@@ -7,8 +7,19 @@
 //
 
 import UIKit
+import CoreData
 
 class AllUserHashTagsTableViewController: CoreDataTableViewController {
+
+    var mention: String? {didSet{ updateUI() } }
+    var managedObjectContext: NSManagedObjectContext? {didSet{ updateUI() } }
+    
+    private func updateUI() {
+        if let context = managedObjectContext, mention != nil {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "TwitterUser")
+            request.predicate = NSPredicate(format: <#T##String#>, <#T##args: CVarArg...##CVarArg#>)
+        }
+    }
 
 
     /*
@@ -20,5 +31,4 @@ class AllUserHashTagsTableViewController: CoreDataTableViewController {
         return cell
     }
     */
-
 }

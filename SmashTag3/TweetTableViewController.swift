@@ -11,6 +11,8 @@ import Twitter
 
 class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     
+    var managedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer.viewContext
+    
     var tweets = [Array<Twitter.Tweet>]() {
         didSet {
             tableView.reloadData()
@@ -42,10 +44,37 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
                     if request === weakSelf?.lastTwitterRequest {
                         if !newTweets.isEmpty {
                            weakSelf?.tweets.insert(newTweets, at: 0)
+                            weakSelf?.updateDatabase(newTweets: newTweets)
                         }
                     }
                 }
             }
+        }
+    }
+    
+    private func updateDatabase(newTweets: [Tweet]) {
+        managedObjectContext?.perform {
+            for twitterInfo in newTweets {
+                //create a new but unique Tweets with that Twitter info
+                _ = Tweets.tweetWithTwitterInfo(twitterInfo: twitterInfo, inManagedObjectContext: self.managedObjectContext!)
+            }
+            do {
+                try self.managedObjectContext?.save()
+            } catch let error {
+                print("Could not save into database, \(error)")
+            }
+        }
+        printDataStatistics()
+        print("Done printing database statistics")
+    }
+    
+    private func printDataStatistics() {
+        managedObjectContext?.perform {
+            if let results = try? self.managedObjectContext?.fetch(TwitterUser.fetchRequest()) {
+                print("\(results!.count) Twitter Users")
+            }
+            let tweetCount = try? self.managedObjectContext?.count(for: Tweets.fetchRequest())
+            print("\(tweetCount!!) tweets")
         }
     }
     

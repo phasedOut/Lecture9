@@ -7,8 +7,14 @@
 //
 
 import UIKit
+import CoreData
+import Twitter
+
 
 class RecentsTableViewController: UITableViewController {
+    
+    var managedObjectContext: NSManagedObjectContext? =
+        (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer.viewContext
     
     var selectedRecentTweet: String?
     
@@ -67,7 +73,7 @@ class RecentsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        performSegue(withIdentifier: "showSegue", sender: UITableViewCellAccessoryType.detailDisclosureButton)
+        performSegue(withIdentifier: "showUserAndHashtag", sender: UITableViewCellAccessoryType.detailDisclosureButton)
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -83,6 +89,7 @@ class RecentsTableViewController: UITableViewController {
     
     struct Storyboard {
         static var unwind = "unwind"
+        static var showUserAndHashtag = "showUserAndHashtag"
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
@@ -92,6 +99,13 @@ class RecentsTableViewController: UITableViewController {
                     let indexPath = tableView.indexPath(for: cell)
                     selectedRecentTweet = SearchHistory.History.history[(indexPath?.row)!]
                     
+                }
+            case Storyboard.showUserAndHashtag:
+                print("hello0")
+                if let AllUserHashTagsTVC = segue.destination as? AllUserHashTagsTableViewController {
+                    let cell = sender as? UITableViewCell
+                    AllUserHashTagsTVC.mention = cell?.textLabel?.text
+                    AllUserHashTagsTVC.managedObjectContext = self.managedObjectContext
                 }
             default:
                 break
